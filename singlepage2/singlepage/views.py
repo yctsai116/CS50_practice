@@ -1,6 +1,51 @@
 from django.http import Http404, HttpResponse
 from django.shortcuts import render
 
+import pandas as pd
+jsonObject={
+    "squadName" : "Super hero squad",
+    "homeTown" : "Metro City",
+    "formed" : 2016,
+    "secretBase" : "Super tower",
+    "active" : "true",
+    "members" : [
+      {
+        "name" : "Molecule Man",
+        "age" : 29,
+        "secretIdentity" : "Dan Jukes",
+        "powers" : [
+          "Radiation resistance",
+          "Turning tiny",
+          "Radiation blast"
+        ]
+      },
+      {
+        "name" : "Madame Uppercut",
+        "age" : 39,
+        "secretIdentity" : "Jane Wilson",
+        "powers" : [
+          "Million tonne punch",
+          "Damage resistance",
+          "Superhuman reflexes"
+        ]
+      },
+      {
+        "name" : "Eternal Flame",
+        "age" : 1000000,
+        "secretIdentity" : "Unknown",
+        "powers" : [
+          "Immortality",
+          "Heat Immunity",
+          "Inferno",
+          "Teleportation",
+          "Interdimensional travel"
+        ]
+      }
+    ]
+  }
+df = pd.json_normalize(jsonObject, 'members', ['squadName', 'homeTown', 'formed'], 
+                    record_prefix='members_')
+
 # Create your views here.
 def index(request):
     return render(request, "singlepage/index.html")
@@ -11,7 +56,8 @@ texts = ["Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam torto
 
 def section(request, num):
     if 1 <= num <= 3:
-        return HttpResponse(texts[num - 1])
+        return HttpResponse(df.iloc[num - 1])
     else:
         raise Http404("No such section")
+
 
