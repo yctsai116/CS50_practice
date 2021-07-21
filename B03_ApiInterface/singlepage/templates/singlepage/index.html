@@ -1,0 +1,46 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Single Page</title>
+        <link rel="stylesheet" href="{% static 'singlepage/styles.css' %}" >
+        <script>
+
+            // window.onpopstate = function(event) {
+            //     console.log(event.state.section);
+            //     showSection(event.state.section);
+            // }
+
+            function showSection(section) {
+                
+                fetch(`/sections/${section}`)
+                .then(response => response.text())
+                .then(text => {
+                    console.log(text);
+                    document.querySelector('#content').innerHTML = text;
+                });
+
+            }
+
+            document.addEventListener('DOMContentLoaded', function() {
+                document.querySelectorAll('button').forEach(button => {
+                    button.onclick = function() {
+                        const section = this.dataset.section;
+                        // history.pushState({section: section}, "", `section${section}`);
+                        showSection(section);
+                    };
+                });
+            });
+        </script>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+    </head>
+    <body>
+        <h1>Hello!</h1>
+        <button data-section="1" class="btn btn-primary">Section 1</button>
+        <button data-section="2" class="btn btn-secondary">Section 2</button>
+        <button data-section="3" class="btn btn-info">Section 3</button>
+        <div id="content">
+        </div>
+    </body>
+</html>
