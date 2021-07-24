@@ -1,46 +1,59 @@
-{% load static %}
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>Single Page</title>
-        <link rel="stylesheet" href="{% static 'singlepage/styles.css' %}" >
-        <script>
-
-            // window.onpopstate = function(event) {
-            //     console.log(event.state.section);
-            //     showSection(event.state.section);
-            // }
-
-            function showSection(section) {
-                
-                fetch(`/sections/${section}`)
-                .then(response => response.text())
-                .then(text => {
-                    console.log(text);
-                    document.querySelector('#content').innerHTML = text;
-                });
-
-            }
-
-            document.addEventListener('DOMContentLoaded', function() {
-                document.querySelectorAll('button').forEach(button => {
-                    button.onclick = function() {
-                        const section = this.dataset.section;
-                        // history.pushState({section: section}, "", `section${section}`);
-                        showSection(section);
-                    };
-                });
-            });
-        </script>
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-
+        <title>Input</title>
     </head>
     <body>
-        <h1>Hello!</h1>
-        <button data-section="1" class="btn btn-primary">Section 1</button>
-        <button data-section="2" class="btn btn-secondary">Section 2</button>
-        <button data-section="3" class="btn btn-info">Section 3</button>
-        <div id="content">
+        <h1>Input</h1>
+        <h2>
+            <ul>
+                <li> {{ senderCode }} </li>
+                <li> {{ operatorCode }} </li>
+                <li> {{ unitCode }} </li>
+            </ul>
+        </h2>
+
+
+        <div>
+            <div>
+                <form>
+                    <p>Topic</p>
+                    <select id="item-list" onchange="changeItem(this.selectedIndex)"></select>
+                    <br>
+                    <br>
+                    <p>When you choose topic, the following menu will show the corresponding items</p>
+                    <select id="sector-list"></select>
+                </form>
+            </div>
+            <div>
+                <script type="text/javascript">
+                var items=['aaa','bbb','ccc','ddd','eee'];
+                var itemSelect=document.getElementById("item-list");
+                var inner = "";
+                for(var i=0;i<items.length;i++){
+                    inner = inner +'<option value=i>' + items[i] + '</option>';
+                }
+                itemSelect.innerHTML=inner;
+
+                var sectors=new Array();
+                sectors[0]=['www','rrr','jjj','hhh','kkk'];
+                sectors[1]=['ww','rr','jj','hh','kk'];
+                sectors[2]=['mmm','nnn','vvv','ggg','lll'];
+                sectors[3]=['mm','nn','vv','gg','ll'];
+                sectors[4]=['m','n','v','g','l'];
+
+                function changeItem(index){
+                    var Sinner="";
+                    for(var i=0;i<sectors[index].length;i++){
+                        Sinner = Sinner+'<option value=i>' + sectors[index][i] + '</option>';
+                    }
+                    var sectorSelect=document.getElementById("sector-list");
+                    sectorSelect.innerHTML=Sinner;
+                }
+                changeItem(document.getElementById("item-list").selectedIndex);
+                </script>
+            </div>
         </div>
+
     </body>
 </html>
