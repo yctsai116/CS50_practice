@@ -5,7 +5,7 @@
     </head>
     <body>
         <h1>OperatorInfo</h1>
-        <h2>{{api_output}}</h2>
+        <h2>{{api_input}}</h2>
         <!-- <h2>
             <ul>
                 <li> {{ senderCode }} </li>
@@ -21,7 +21,11 @@
         </h2>
         <h1>API name</h1>
         <h2>{{apiName}}</h2> -->
-
+        <form action="{% url 'singlepage:addapi' %}" method="post">
+            {% csrf_token %}
+            {{ form2 }}
+            <input type="submit" value="Submit">
+        </form>
 
 
 

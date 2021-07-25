@@ -4,56 +4,28 @@
         <title>Input</title>
     </head>
     <body>
-        <h1>Input</h1>
-        <h2>
+        <h1>OperatorInfo</h1>
+        <h2>{{api_input}}</h2>
+        <!-- <h2>
             <ul>
                 <li> {{ senderCode }} </li>
                 <li> {{ operatorCode }} </li>
                 <li> {{ unitCode }} </li>
+                <li> {{ identifyType }} </li>
+                <li> {{ cbCustId }} </li>
+                <li> {{ ccCustId }} </li>
+                <li> {{ custId }} </li>
+                <li> {{ birthDt }} </li>
+                <li> {{ custName }} </li>
             </ul>
-        </h2>
+        </h2>-->
+        <h1>API name</h1>
+        <h2>{{api_name}}</h2> 
 
-
-        <div>
-            <div>
-                <form>
-                    <p>Topic</p>
-                    <select id="item-list" onchange="changeItem(this.selectedIndex)"></select>
-                    <br>
-                    <br>
-                    <p>When you choose topic, the following menu will show the corresponding items</p>
-                    <select id="sector-list"></select>
-                </form>
-            </div>
-            <div>
-                <script type="text/javascript">
-                var items=['aaa','bbb','ccc','ddd','eee'];
-                var itemSelect=document.getElementById("item-list");
-                var inner = "";
-                for(var i=0;i<items.length;i++){
-                    inner = inner +'<option value=i>' + items[i] + '</option>';
-                }
-                itemSelect.innerHTML=inner;
-
-                var sectors=new Array();
-                sectors[0]=['www','rrr','jjj','hhh','kkk'];
-                sectors[1]=['ww','rr','jj','hh','kk'];
-                sectors[2]=['mmm','nnn','vvv','ggg','lll'];
-                sectors[3]=['mm','nn','vv','gg','ll'];
-                sectors[4]=['m','n','v','g','l'];
-
-                function changeItem(index){
-                    var Sinner="";
-                    for(var i=0;i<sectors[index].length;i++){
-                        Sinner = Sinner+'<option value=i>' + sectors[index][i] + '</option>';
-                    }
-                    var sectorSelect=document.getElementById("sector-list");
-                    sectorSelect.innerHTML=Sinner;
-                }
-                changeItem(document.getElementById("item-list").selectedIndex);
-                </script>
-            </div>
-        </div>
+        <form action="{% url 'singlepage:index' %}" method="post">
+            {% csrf_token %}
+            <input type="Submit" value="Go get these API">
+        </form>
 
     </body>
 </html>

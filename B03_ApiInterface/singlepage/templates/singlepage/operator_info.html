@@ -4,10 +4,13 @@
         <title>Operator Info</title>
     </head>
     <body>
+        <h1>Here input the info to api</h1>
         <form action="{% url 'singlepage:opInfo' %}" method="post">
             {% csrf_token %}
-            {{ form }}
+            {{ form1 }}
             <input type="submit" value="Submit">
+        </form>
+
         </form>
     </body>
 </html>

@@ -1,6 +1,6 @@
 from django.http import Http404, HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
-from .forms import OperatorInfo
+from .forms import OperatorInfo, APIname
 from django.urls import reverse
 
 import pandas as pd
@@ -117,9 +117,39 @@ api_resj={'requestModel':{
 # ===============================extract the main part of the api response=============================
 api_resj_m = api_resj["resultBody"]["resultJson"][0]["items"]
 
+api_input={
+  'senderCode':"",
+  'operatorCode':"",
+  'unitCode':"",
+  'identifyType':"",
+  'cbCustId':"",
+  'ccCustId':"",
+  'custId':"",
+  'birthDt':"",
+  'custName':""
+}
+
+api_name={
+        'apiName_1':"",
+        'apiName_2':"",
+        'apiName_3':"",
+        'apiName_4':"",
+        'apiName_5':""
+        }
+
+
+def dummy_func(unitcode,id,api_name):
+  return {'dummy_func':unitcode+id+api_name}
 
 
 # Create your views here.
+def index(request):
+  if request.method == 'POST':
+    dummy_response=dummy_func(api_input['unitCode'],api_input['custId'],api_name['apiName_1'])
+    return render(request, "singlepage/index_new.html",{'api_input':api_input,'api_name':api_name,'dummy_response':dummy_response})
+  else:
+    return render(request, "singlepage/index.html",{'api_input':api_input,'api_name':api_name})
+
 def output(request):
     return render(request, "singlepage/output.html")
 
@@ -134,25 +164,51 @@ def operator_info(request):
     # if this is a POST request we need to process the form data
     if request.method == 'POST':
         # create a form instance and populate it with data from the request:
-        form = OperatorInfo(request.POST)
+        form1 = OperatorInfo(request.POST)
         # check whether it's valid:
-        if form.is_valid():
+        if form1.is_valid():
             # process the data in form.cleaned_data as required
-            senderCode = form.cleaned_data['senderCode']
-            operatorCode = form.cleaned_data['operatorCode']
-            unitCode = form.cleaned_data['unitCode']
+            api_input['senderCode'] = form1.cleaned_data['senderCode']
+            api_input['operatorCode'] = form1.cleaned_data['operatorCode']
+            api_input['unitCode'] = form1.cleaned_data['unitCode']
+            api_input['identifyType'] = form1.cleaned_data['identifyType']
+            api_input['cbCustId'] = form1.cleaned_data['cbCustId']
+            api_input['ccCustId'] = form1.cleaned_data['ccCustId']
+            api_input['custId'] = form1.cleaned_data['custId']
+            api_input['birthDt'] = form1.cleaned_data['birthDt']
+            api_input['custName'] = form1.cleaned_data['custName']  
+            
+
+            
             # redirect to a new URL:
-            return render(request, 'singlepage/index.html', {
-              'senderCode': senderCode,
-              'operatorCode':operatorCode,
-              'unitCode':unitCode
-              })
+            return HttpResponseRedirect(reverse("singlepage:addapi"))
+            # return render(request, 'singlepage/index.html', {
+            #   'senderCode': senderCode,
+            #   'operatorCode':operatorCode,
+            #   'unitCode':unitCode
+            #   })
 
     # if a GET (or any other method) we'll create a blank form
     else:
-        form = OperatorInfo()
+        form1 = OperatorInfo()
 
-    return render(request, 'singlepage/operator_info.html', {'form': form})
+    return render(request, 'singlepage/operator_info.html', {'form1': form1})
+
+def add_api(request):
+    
+    if request.method == "POST":
+        form2 = APIname(request.POST)
+        if form2.is_valid():
+            api_name['apiName_1'] = form2.cleaned_data["apiName_1"]
+            api_name['apiName_2'] = form2.cleaned_data["apiName_2"]
+            api_name['apiName_3'] = form2.cleaned_data["apiName_3"]
+            api_name['apiName_4'] = form2.cleaned_data["apiName_4"]
+            api_name['apiName_5'] = form2.cleaned_data["apiName_5"]
+            return HttpResponseRedirect(reverse("singlepage:index"))
+    else:
+        form2 = APIname()
 
 
-
+    return render(request, "singlepage/add_api.html",{
+        'form2': form2
+    })
